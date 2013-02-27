@@ -11,9 +11,8 @@ class UiController < ApplicationController
 
   def create_yaml
     require 'yaml'
-    array = Array.new
-    @yaml = Array.new
-    
+    array, @yaml = [],[]
+
     params.each { |k,v|
       k = k.to_s
       if k =~ /\w+_\w+_\d+/ and v !=''
@@ -21,6 +20,7 @@ class UiController < ApplicationController
       end
     }
     
+
     until array.empty? do
       array2=[]
       hash1,yaml_tmp={},{}
@@ -60,6 +60,6 @@ class UiController < ApplicationController
   end
 
   def download
-    create_yaml
+   create_yaml
   end
 end

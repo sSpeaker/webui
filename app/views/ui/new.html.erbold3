@@ -60,7 +60,7 @@ function addInput(divName, type) {
   var mainCanvasDiv = document.createElement('div');
   mainCanvasDiv.id =  'right' + counter;
   mainCanvasDiv.className = 'slidingDiv' + counter;
-  mainCanvasDiv.style.display = 'none';
+  mainCanvasDiv.style.display = 'none1';
 
   var newdiv = document.createElement('div');
   newdiv.id = 'dynamicInput_' + counter;
@@ -69,7 +69,7 @@ function addInput(divName, type) {
   {
   <% @hash.each do |k,v| %>
     case '<%= k %>':
-      newdiv.innerHTML = '<a href="#" class="show_hide' + counter + '" onclick="generateHandler('+counter+')()"><h3 id="x'+counter+'"><%= k %></h3></a>\
+      newdiv.innerHTML = '<h3 id="x'+counter+'">Package</h3>\
                           <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/img/delete.png"></a><br>\
 ';
 
@@ -82,10 +82,8 @@ function addInput(divName, type) {
 
       $("#" + counter).keyup(function ()
       {var value = $(this).val();
-var b = counter - 1;
+var b=counter-1;
       $("#x" + b).text(value);
-alert(b);
-alert(counter);
       });
 
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
