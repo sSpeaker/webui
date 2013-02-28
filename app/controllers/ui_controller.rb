@@ -1,11 +1,32 @@
 class UiController < ApplicationController
   def new
-   @hash = { 'package' => ['version'],
-             'file' => ['source','owner','group','mode','managed'],
-             'symlink' => ['source','owner','group','mode'],
-             'dir' => ['owner','group','mode'],
-             'service' => ['status','has_restart','subscribe'],
-             'notify' => ['message'] }
+#   @hash = { 'package' => {'version'=> {
+#                              :mandatory => true,
+#                              :type => 'text',
+#                              :regexp => '^a+$',
+#                              :values => 'eampty'}},
+#             'file' => {'source' => {},
+#                        'owner' => { :regexp => '^[a-zA-Z]+$'},
+#                        'group' => {},
+#                        'mode' => { :regexp=> '^[0-1]?[0-7]{3}$'},
+#                        'managed' => {:type => 'text', :values => ['true','false']}},
+#             'symlink' => { 'source'=>{}, 'owner'=>{}, 'group'=>{}, 'mode'=>{}},
+#             'dir' => {'owner'=>{}, 'group'=>{}, 'mode'=>{}},
+#             'service' => {'status'=>{}, 'has_restart'=>{}, 'subscribe'=>{}},
+#             'notify' => {'message'=>{}}}
+
+    require 'yaml'
+    tmp_hash = YAML.load_file("/etc/puppet/ui_schema.yaml")
+
+    tmp_hash.each do |type,param|
+      param.each do |param_name,param_value|
+        if param_value == nil
+          tmp_hash[type][param_name] = {}
+        end
+      end
+    end
+
+    @hash = tmp_hash
   end
 
 

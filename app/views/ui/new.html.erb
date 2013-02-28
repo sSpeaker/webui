@@ -110,18 +110,18 @@ function addInput(divName, type) {
 
       mainCanvasDiv.innerHTML = '<input id="'+counter+'" type="text" name="<%= k %>_name_' + counter + '" required> name<br>\
                                  <% v.each do |field_name,options| %>
-                                   <% case options[:type]
+                                   <% case options['type']
                                       when "select" %>
-                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options[:values].each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
+                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
                                      <% else %>
-                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options[:mandatory]%>> <%= field_name %><br>\
+                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options['mandatory']%>> <%= field_name %><br>\
                                        <% end %>
                                     <% end %>';
 
      var hash = {}
      <% v.each do |field_name,options| %>
-      <% if options[:regexp] %>
-        hash["input_<%= k %>_<%= field_name %>_" + counter] = '<%= options[:regexp] %>'
+      <% if options['regexp'] %>
+        hash["input_<%= k %>_<%= field_name %>_" + counter] = '<%= options['regexp'] %>'
       <%end%> 
      <% end %>
 
