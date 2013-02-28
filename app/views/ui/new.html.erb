@@ -2,6 +2,11 @@
 <head>
 
 <style>
+
+#mainForm input.error {
+    background: none repeat scroll 0 0 #F8DBDB;
+    border-color: #E77776;
+}
  p { color:blue; margin:8px; }
 
   #left {
@@ -17,12 +22,15 @@
     width: 38%;
   }
 </style>
+
+
  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
  <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-<script>
 
+
+<script>
 function removeInput(divName, divName2) {
   document.getElementById("sortable").removeChild(document.getElementById(divName));
   document.getElementById("right").removeChild(document.getElementById(divName2));
@@ -48,6 +56,7 @@ $(document).ready(function(){
 });
 
 var counter = 1;
+var hash = {};
 
 function generateHandler(number) {
   return function() {
@@ -60,6 +69,27 @@ function generateHandler(number) {
     }
     $('.slidingDiv' + number).slideToggle();
   };
+}
+
+
+function validateRegexp(regexp,input_id){
+  var id = $("#" + input_id)
+  id.keyup(function() {
+    //testing regular expression
+    var a = id.val();
+    var filter = new RegExp(regexp);
+
+    //if it's valid
+    if(filter.test(a)){
+      id.removeClass("error");
+      return true;
+    }
+    //if it's NOT valid
+    else{
+      id.addClass("error");
+      return false;
+    }
+  });
 }
 
 function addInput(divName, type) {
@@ -84,26 +114,41 @@ function addInput(divName, type) {
                                       when "select" %>
                                        <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options[:values].each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
                                      <% else %>
-                                       <input type="text" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options[:mandatory]%>> <%= field_name %><br>\
-                                   <% end %>
-                                 <% end %>';
+                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options[:mandatory]%>> <%= field_name %><br>\
+                                       <% end %>
+                                    <% end %>';
+
+     var hash = {}
+     <% v.each do |field_name,options| %>
+      <% if options[:regexp] %>
+        hash["input_<%= k %>_<%= field_name %>_" + counter] = '<%= options[:regexp] %>'
+      <%end%> 
+     <% end %>
+
      var fildsId = counter
     break;
   <% end %>
   }
   document.getElementById(divName).appendChild(newdiv);
   document.getElementById("right").appendChild(mainCanvasDiv);
+
+  for (var k in hash) {
+    if (hash.hasOwnProperty(k)) {
+      validateRegexp(hash[k], k);
+    }
+  }
+
   duplicateText(fildsId)
 
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
   counter++;
 }
+
 </script>
 
 </head>
 <body>
-
-<form action="/ui/download" method="POST">
+<form id="mainForm" action="/ui/download" method="POST" >
   <div id="center">
     <% @hash.each do |key,value| %>
       <input type="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
