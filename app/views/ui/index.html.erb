@@ -1,0 +1,30 @@
+ <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+ <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
+ <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+ <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+
+<script>
+
+$(document).ready(function() {
+        $('a.link').click(function() {
+$('a.link').css('background-color', '#FFFFFF');
+                $(this).css('background-color', '#EBA521');
+                return false;
+        });
+});
+
+function MyFunction(link){
+$("a.mylink").attr("href", link);
+}
+
+</script>
+
+<div style="height:500px;width:120px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+
+<% Dir.chdir(@yamls_dir)%>
+<% Dir['*.yaml'].sort.each do |file| %>
+<a href="#" class="link" OnClick="MyFunction('<%= file %>');"><%= file %></a><br>
+<% end %>
+</div>
+<a href="#" class="mylink">EDIT</a>
+<a href="#">VIEW</a>

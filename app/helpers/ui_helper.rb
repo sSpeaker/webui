@@ -1,4 +1,8 @@
 module UiHelper
+  
+  def module_dir
+    "/etc/puppet/modules/yaml2catalog"
+  end
 
   def create_yaml
     require 'yaml'
@@ -41,6 +45,7 @@ module UiHelper
           hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
         end
         yaml_tmp[type] = { params["#{type}_name_#{num}".to_sym].to_s => hash1 }
+
         if order.empty?
           @yaml << yaml_tmp.to_yaml.sub("---\n","")
         else

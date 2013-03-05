@@ -2,6 +2,10 @@ span[id^="x"]{
 width: 300px;
 }
 
+input.button{
+width: 100px;
+}
+
 div[id^="dynamicInput_"]{
 padding-top: 10px;
 padding-bottom: 10px;

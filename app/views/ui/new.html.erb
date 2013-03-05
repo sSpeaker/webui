@@ -10,29 +10,48 @@
 
 
 <script>
-var lightcounter;
-function light(number) {
- if (number != lightcounter) {
-  $('.child' + number).css('background-color','#B0C4DE');
-  $('.child' + lightcounter).css('background-color','#F5F5DC');
- }
-lightcounter = number;
-}
-
 
 function removeInput(divName, divName2) {
   document.getElementById("sortable").removeChild(document.getElementById(divName));
   document.getElementById("right").removeChild(document.getElementById(divName2));
 }
 
-function duplicateText(fildsId) {
-      $("#" + fildsId).keyup(function (){
-        var value = $(this).val();
-        $("#x" + fildsId).text(value);
-      });
-}
 
 $(document).ready(function(){
+ //Resource title hilight 
+  $(".resource_title").find(".link").live("click", function() {
+    $('.resource_title').css('background-color','#F5F5DC');
+    $(this).parents('.resource_title').css('background-color','#B0C4DE');
+  });
+ 
+ //Duplicate name field to title support
+  $(".name").live("keyup",function() {
+    var value = $(this).val();
+    var count = $(this).data('counter');
+    $("#parents_of_"+count).text(value);
+  });
+  
+ //Selector support. TO DO
+  $("#selector_img").live("click",function(){
+    $(this).remove();
+  });
+
+
+ //Input rgexp check. ADD: Do not submit without valid regexp
+  $(".regexp").live("keyup",function() {
+    var value = $(this).val();
+    var filter = new RegExp($(this).data('regexp'));
+
+    //if it's valid
+    if( filter.test(value)){
+      $(this).removeClass("error");
+      return true;
+    }
+    else{
+      $(this).addClass("error");
+      return false;
+    }
+  });
 
   $('#dynamicInput0 a.show_hide0').click(generateHandler(0));
 
@@ -45,7 +64,6 @@ $(document).ready(function(){
 });
 
 var counter = 1;
-var hash = {};
 
 function generateHandler(number) {
   return function() {
@@ -60,27 +78,6 @@ function generateHandler(number) {
   };
 }
 
-
-function validateRegexp(regexp,input_id){
-  var id = $("#" + input_id)
-  id.keyup(function() {
-    //testing regular expression
-    var a = id.val();
-    var filter = new RegExp(regexp);
-
-    //if it's valid
-    if(filter.test(a)){
-      id.removeClass("error");
-      return true;
-    }
-    //if it's NOT valid
-    else{
-      id.addClass("error");
-      return false;
-    }
-  });
-}
-
 function addInput(divName, type) {
   var mainCanvasDiv = document.createElement('div');
   mainCanvasDiv.id =  'right' + counter;
@@ -89,48 +86,39 @@ function addInput(divName, type) {
 
   var newdiv = document.createElement('div');
   newdiv.id = 'dynamicInput_' + counter;
-  newdiv.className = 'child' + counter;
+  newdiv.className = 'resource_title';
 
   switch (type)
   {
   <% @hash.each do |k,v| %>
     case '<%= k %>':
-      newdiv.innerHTML = '<a href="#" class="show_hide' + counter + '" onclick="generateHandler('+counter+')();light('+counter+')"><span><%= k.capitalize %>: </span><span id="x'+counter+'"></span></a>\
-                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/img/delete.png"></a><br>';
+      newdiv.innerHTML = '<a href="#" class="link show_hide' + counter + '" onclick="generateHandler('+counter+')();light('+counter+')"><span><%= k.capitalize %>: </span><span id="parents_of_'+counter+'"></span></a>\
+                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/assets/delete.png"></a><br>';
 
-      mainCanvasDiv.innerHTML = '<input id="'+counter+'" type="text" name="<%= k %>_name_' + counter + '" required> name<br>\
+      mainCanvasDiv.innerHTML = '\
                                  <% v.each do |field_name,options| %>
                                    <% case options['type']
                                       when "select" %>
                                        <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
                                      <% else %>
-                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options['mandatory']%>> <%= field_name %><br>\
+                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
+                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
+                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
+                                       data-counter="' + counter + '" \
+                                       <%= "required" if field_name == "name" or options['mandatory']%>>\
+                                       <img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
                                        <% end %>
                                     <% end %>';
 
-     var hash = {}
-     <% v.each do |field_name,options| %>
-      <% if options['regexp'] %>
-        hash["input_<%= k %>_<%= field_name %>_" + counter] = '<%= options['regexp'] %>'
-      <%end%> 
-     <% end %>
-
-     var fildsId = counter
     break;
   <% end %>
   }
+
   document.getElementById(divName).appendChild(newdiv);
   document.getElementById("right").appendChild(mainCanvasDiv);
 
-  for (var k in hash) {
-    if (hash.hasOwnProperty(k)) {
-      validateRegexp(hash[k], k);
-    }
-  }
-
-  duplicateText(fildsId)
-
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
+
   counter++;
 }
 
@@ -141,14 +129,13 @@ function addInput(divName, type) {
 <form id="mainForm" action="/ui/download" method="POST" >
   <div id="center">
     <% @hash.each do |key,value| %>
-      <input type="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
+      <input type="button" class="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
     <% end %>
   </div>
 
   <div id="left">
     <div id="sortable">
       <input type="hidden" name="sort" id="sort" value="">
-
     </div>
     <input type=submit value="Download!">
   </div>

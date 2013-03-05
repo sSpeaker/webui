@@ -1,27 +1,24 @@
 <html>
 <head>
 
-<style>
- p { color:blue; margin:8px; }
 
-  #left {
-    float: left;
-    width: 40%;
-  }
-  #center {
-    float: left;
-    width: 20%;
-  }
-  #right {
-    float: right;
-    width: 38%;
-  }
-</style>
+
  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
  <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+
+
 <script>
+var lightcounter;
+function light(number) {
+ if (number != lightcounter) {
+  $('.child' + number).css('background-color','#B0C4DE');
+  $('.child' + lightcounter).css('background-color','#F5F5DC');
+ }
+lightcounter = number;
+}
+
 
 function removeInput(divName, divName2) {
   document.getElementById("sortable").removeChild(document.getElementById(divName));
@@ -36,6 +33,10 @@ function duplicateText(fildsId) {
 }
 
 $(document).ready(function(){
+ 
+  $("#selector_img").live("click",function(){
+    $(this).remove();
+  });  
 
   $('#dynamicInput0 a.show_hide0').click(generateHandler(0));
 
@@ -48,6 +49,7 @@ $(document).ready(function(){
 });
 
 var counter = 1;
+var hash = {};
 
 function generateHandler(number) {
   return function() {
@@ -62,6 +64,27 @@ function generateHandler(number) {
   };
 }
 
+
+function validateRegexp(regexp,input_id){
+  var id = $("#" + input_id)
+  id.keyup(function() {
+    //testing regular expression
+    var a = id.val();
+    var filter = new RegExp(regexp);
+
+    //if it's valid
+    if(filter.test(a)){
+      id.removeClass("error");
+      return true;
+    }
+    //if it's NOT valid
+    else{
+      id.addClass("error");
+      return false;
+    }
+  });
+}
+
 function addInput(divName, type) {
   var mainCanvasDiv = document.createElement('div');
   mainCanvasDiv.id =  'right' + counter;
@@ -70,43 +93,60 @@ function addInput(divName, type) {
 
   var newdiv = document.createElement('div');
   newdiv.id = 'dynamicInput_' + counter;
+  newdiv.className = 'child' + counter;
 
   switch (type)
   {
   <% @hash.each do |k,v| %>
     case '<%= k %>':
-      newdiv.innerHTML = '<a href="#" class="show_hide' + counter + '" onclick="generateHandler('+counter+')()"><span><%= k.capitalize %>: </span><span id="x'+counter+'"></span></a>\
-                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/img/delete.png"></a><br>';
+      newdiv.innerHTML = '<a href="#" class="show_hide' + counter + '" onclick="generateHandler('+counter+')();light('+counter+')"><span><%= k.capitalize %>: </span><span id="x'+counter+'"></span></a>\
+                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/assets/delete.png"></a><br>';
 
       mainCanvasDiv.innerHTML = '<input id="'+counter+'" type="text" name="<%= k %>_name_' + counter + '" required> name<br>\
                                  <% v.each do |field_name,options| %>
-                                   <% case options[:type]
+                                   <% case options['type']
                                       when "select" %>
-                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options[:values].each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
+                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
                                      <% else %>
-                                       <input type="text" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options[:mandatory]%>> <%= field_name %><br>\
-                                   <% end %>
-                                 <% end %>';
+                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" <%= "required" if options['mandatory']%>>\
+                                       <img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
+                                       <% end %>
+                                    <% end %>';
+
+     var hash = {}
+     <% v.each do |field_name,options| %>
+      <% if options['regexp'] %>
+        hash["input_<%= k %>_<%= field_name %>_" + counter] = '<%= options['regexp'] %>'
+      <%end%> 
+     <% end %>
+
      var fildsId = counter
     break;
   <% end %>
   }
   document.getElementById(divName).appendChild(newdiv);
   document.getElementById("right").appendChild(mainCanvasDiv);
+
+  for (var k in hash) {
+    if (hash.hasOwnProperty(k)) {
+      validateRegexp(hash[k], k);
+    }
+  }
+
   duplicateText(fildsId)
 
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
   counter++;
 }
+
 </script>
 
 </head>
 <body>
-
-<form action="/ui/download" method="POST">
+<form id="mainForm" action="/ui/download" method="POST" >
   <div id="center">
     <% @hash.each do |key,value| %>
-      <input type="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
+      <input type="button" class="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
     <% end %>
   </div>
 

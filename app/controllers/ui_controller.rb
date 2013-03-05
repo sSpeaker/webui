@@ -1,5 +1,10 @@
 class UiController < ApplicationController
   include UiHelper
+  def test
+  end
+  def index
+    @yamls_dir = module_dir + "/yamls"
+  end
 
   def new
     require 'yaml'
