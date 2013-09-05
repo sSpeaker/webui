@@ -165,4 +165,18 @@ function addInput(divName, type) {
 </body>
 </html>
 
-
+////////////me script
+<script type="text/javascript">
+        function codeAddress() {
+        	<% if @yamls_file%>
+            <%   @yamls_file.each do |type,param| %>          
+           addInput('sortable', '<%= type %>');
+           
+           <% if param%>
+           <%   end %>
+           <% end%>
+           <% end%>
+           
+        }
+        window.onload = codeAddress;      
+  </script>

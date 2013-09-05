@@ -44,26 +44,94 @@ module UiHelper
         array2.each do |i|
           hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
         end
-        yaml_tmp[type] = { params["#{type}_name_#{num}".to_sym].to_s => hash1 }
+        if hash1.empty?
+          yaml_tmp[type] = { params["#{type}_name_#{num}".to_sym].to_s => "!!!!" }
+        else
+          yaml_tmp[type] = { params["#{type}_name_#{num}".to_sym].to_s => hash1 }
+        end
+        
+        if order.empty?
+          @yaml << yaml_tmp.to_yaml.sub("--- \n","")
+        else
+          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("--- \n","")
+        end
+      elsif array2.include?("path")
+        array2-=["path"]
+        array2.each do |i|
+          hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
+        end
+        if hash1.empty?
+          yaml_tmp[type] = { params["#{type}_path_#{num}".to_sym].to_s => "!!!!" }
+        else
+          yaml_tmp[type] = { params["#{type}_path_#{num}".to_sym].to_s => hash1 }
+        end
 
         if order.empty?
-          @yaml << yaml_tmp.to_yaml.sub("---\n","")
+          @yaml << yaml_tmp.to_yaml.sub("--- \n","")
         else
-          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("---\n","")
+          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("--- \n","")
+        end  
+      elsif array2.include?("command")
+        array2-=["command"]
+        array2.each do |i|
+          hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
         end
+        if hash1.empty?
+          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => "!!!!" }
+        else
+          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => hash1 }
+        end
+
+        if order.empty?
+          @yaml << yaml_tmp.to_yaml.sub("--- \n","")
+        else
+          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("--- \n","")
+        end  
+      elsif array2.include?("url")
+        array2-=["url"]
+        array2.each do |i|
+          hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
+        end
+        if hash1.empty?
+          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => "!!!!" }
+        else
+          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => hash1 }
+        end
+
+        if order.empty?
+          @yaml << yaml_tmp.to_yaml.sub("--- \n","")
+        else
+          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("--- \n","")
+        end 
+      elsif array2.include?("pool")
+        array2-=["pool"]
+        array2.each do |i|
+          hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
+        end
+        if hash1.empty?
+          yaml_tmp[type] = { params["#{type}_pool_#{num}".to_sym].to_s => "!!!!" }
+        else
+          yaml_tmp[type] = { params["#{type}_pool_#{num}".to_sym].to_s => hash1 }
+        end
+
+        if order.empty?
+          @yaml << yaml_tmp.to_yaml.sub("--- \n","")
+        else
+          @yaml[order.index(num)] = yaml_tmp.to_yaml.sub("--- \n","")
+        end         
       else
         raise "Where is no name parametr"
       end
     end
-
-    File.open('/tmp/module.yaml', 'w') { |f|
+    
+    File.open('/etc/puppet/modules/yaml2catalog/yamls/module.yaml', 'w') { |f|
+      f.write("---\n")
       @yaml.each { |i|
-        f.write(i)
+        f.write(i.gsub(/"!!!!"/, ''))
       }
     }
-
-    send_file '/tmp/module.yaml'
-
+    
+    send_file '/etc/puppet/modules/yaml2catalog/yamls/module.yaml'
   end
 
 end

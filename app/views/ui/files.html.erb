@@ -1,0 +1,15 @@
+<% if @file_content.kind_of?(Array)%>
+<strong><%=  @path %></strong><br>
+<%   @file_content.each do |line| %>
+<%   if /^    */ =~ line %>
+<%= "&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %><%=     "#{line}"%><br>
+<%   elsif /^  */ =~ line %>
+<%= "&nbsp;&nbsp;".html_safe %><%=     "#{line}"%><br>
+<%  else%>
+<%=     "#{line}"%><br>
+<%  end %>
+
+<%   end %>
+<% else %>
+<%=  @file_content%>
+<% end %>

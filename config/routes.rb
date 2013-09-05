@@ -4,4 +4,5 @@ Webui::Application.routes.draw do
   get "ui/new"
   get "ui/index"
   get "ui/test"
+  get "ui/files"
 end

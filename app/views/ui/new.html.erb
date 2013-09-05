@@ -1,15 +1,26 @@
 <html>
 <head>
-
-
-
  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
  <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+<script type="text/javascript">
 
-
-<script>
+function codeAddress() {
+	<% if @succ_array%>
+    <%   @succ_array.each do |type,param| %>    
+    <%   param.each do |param1,param2| %>  
+     <%    @name = "name"+"@"+param1+"@";   %> 
+     <%   param2.each do |par1,par2| %> 
+      <%    @name = @name + par1 + "@" + par2.to_s + "@" %> 
+     <%   end %>      
+   autoInput('sortable', '<%= type.gsub(/[0-9]/, '').gsub(/[:]/, '') %>' , '<%= param1 %>','<%= @name %>');
+       <% end%>
+   <% end%>
+   <% end%>
+   
+}
+window.onload = codeAddress;
 
 function removeInput(divName, divName2) {
   document.getElementById("sortable").removeChild(document.getElementById(divName));
@@ -78,73 +89,162 @@ function generateHandler(number) {
   };
 }
 
-function addInput(divName, type) {
+function autoInput(divName, type , name_param , name_param1) {
+  if (name_param){
+	  masyv = 	name_param1.split(/[@]/);
+	  masyv.pop();
+  }
   var mainCanvasDiv = document.createElement('div');
   mainCanvasDiv.id =  'right' + counter;
   mainCanvasDiv.className = 'slidingDiv' + counter;
   mainCanvasDiv.style.display = 'none';
-
   var newdiv = document.createElement('div');
   newdiv.id = 'dynamicInput_' + counter;
   newdiv.className = 'resource_title';
-
-  switch (type)
-  {
-  <% @hash.each do |k,v| %>
-    case '<%= k %>':
-      newdiv.innerHTML = '<a href="#" class="link show_hide' + counter + '" onclick="generateHandler('+counter+')();light('+counter+')"><span><%= k.capitalize %>: </span><span id="parents_of_'+counter+'"></span></a>\
-                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/assets/delete.png"></a><br>';
-
-      mainCanvasDiv.innerHTML = '\
-                                 <% v.each do |field_name,options| %>
-                                   <% case options['type']
-                                      when "select" %>
-                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
-                                     <% else %>
-                                       <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
-                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
-                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
-                                       data-counter="' + counter + '" \
-                                       <%= "required" if field_name == "name" or options['mandatory']%>>\
-                                       <img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
-                                       <% end %>
-                                    <% end %>';
-
-    break;
-  <% end %>
+  
+  if (name_param){
+	  switch (type)
+	  {
+	  <% @hash.each do |k,v| %>
+	    case '<%= k %>':
+	      newdiv.innerHTML = '<a href="#" class="link show_hide' + counter + '" onclick="generateHandler('+counter+')();"><span><%= k.capitalize %>: </span><span id="parents_of_'+counter+'">' + name_param+ '</span></a>\
+	                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/assets/delete.png"></a><br>';
+	      mainCanvasDiv.innerHTML = '\
+	                                 <% v.each do |field_name,options| %>
+	                                   <% case options['type']
+	                                      when "select" %>
+	                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
+	                                     <% else %>';
+	                                     
+	                                     www = 0;
+	                                     
+	                                     for (var i=0; i< masyv.length;i++){
+	                                     	if ( (i)%2 == 0 ){
+	  	                                 	if ( masyv[i] == '<%= field_name %>' ){
+	  	                                 		www = 1;
+	                                     };};};
+	                                     
+	                                     if(www == 0){
+	                                     	masyv.push('<%= field_name %>','')
+	                                     }
+	                                     for (var i=0; i< masyv.length;i++){
+	  	                                 	if ( (i)%2 == 0 ){
+	  	                                 		if ( masyv[i] == '<%= field_name %>' ){
+	  	                                 <% if  !options['select_type']%>			
+	              mainCanvasDiv.innerHTML = mainCanvasDiv.innerHTML + '<input type="text" value="' + masyv[i+1] + '" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
+	                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
+	                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
+	                                       data-counter="' + counter + '" \
+	                                       <%= "required" if field_name == "name" or options['mandatory']%>>';
+	                                     };};};
+	                                       
+	              mainCanvasDiv.innerHTML = mainCanvasDiv.innerHTML + '<img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
+	                                       <% end %>
+	                                       <% end %>
+	                                     <% if  options['select_type']%>
+	              mainCanvasDiv.innerHTML = mainCanvasDiv.innerHTML + '<select class="styled-select" data-counter="' + counter + '" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '">\
+	              	                       <% options['select_type'].split('/').each do |c| %><option \
+	              	                       <% if @name %> \
+	              	                       <% counter_selector = 0 %> \
+	              	                       <% @name.split('@').each do |l| %>\
+	              	                       <% if l == field_name %>\
+	              	                       <% counter_selector = 1 %> \
+	              	                       <% end %> \
+	              	                       <% if l == c && counter_selector ==1 %>\
+	              	                       <%= "selected" %>\
+	              	                       <% counter_selector = 0 %> \
+	              	                       <%end %> \
+	              	                       <% end%>\
+	              	                       <% end%>\
+	              	                       l><%= c %></option><% end %>\
+	              	                       </select>\
+	                                       <%= "required" if field_name == "name" or options['mandatory']%>';
+	                                     };};};
+	                                       
+	              mainCanvasDiv.innerHTML = mainCanvasDiv.innerHTML + '<img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
+	                                       <% end %>
+	                                    <% end %>';
+	                                    
+	
+	    break;
+	  <% end %>
+	  }
+  }else{
+	  switch (type)
+	  {
+	  <% @hash.each do |k,v| %>
+	    case '<%= k %>':
+	      newdiv.innerHTML = '<a href="#" class="link show_hide' + counter + '" onclick="generateHandler('+counter+')();"><span><%= k.capitalize %>: </span><span id="parents_of_'+counter+'"></span></a>\
+	                          <a href="#" onclick=removeInput("'+newdiv.id+'","'+mainCanvasDiv.id+'")><img src="/assets/delete.png"></a><br>';
+	
+	      mainCanvasDiv.innerHTML = '\
+	                                 <% v.each do |field_name,options| %>
+	                                   <% case options['type']
+	                                      when "select" %>
+	                                       <select name=="<%= k %>_<%= field_name %>_' + counter + '"><% options['values'].split(', ').each do |i| %><option><%= i %></option><% end %></select> <%= field_name %><br>\
+	                                     <% else %>
+	                                       <% if  options['select_type']%> 
+	                                       <select class="styled-select" data-counter="' + counter + '" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '"><% options['select_type'].split('/').each do |i| %><option><%= i %></option><% end %></select>\
+	                                       <%= "required" if field_name == "name" or options['mandatory']%>\
+	                                       <img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
+	                                       <% end %>
+	                                       <% end %>
+	                                       <% if  !options['select_type']%>
+	                                        <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
+	                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
+	                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
+	                                       data-counter="' + counter + '" \
+	                                       <%= "required" if field_name == "name" or options['mandatory']%>>\
+	                                       <img id="selector_img" src="/assets/selector.png"> <%= field_name %><br>\
+	                                       <% end %>
+	                                    <% end %>';
+	
+	    break;
+	  <% end %>
+	  }
   }
-
   document.getElementById(divName).appendChild(newdiv);
   document.getElementById("right").appendChild(mainCanvasDiv);
-
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
-
   counter++;
 }
 
-</script>
+function selectChange(elementselect){
+	if(document.getElementById(elementselect)){
+    	alert('<%= @name %>');
+	}
+}
+ 
 
+</script>
 </head>
 <body>
-<form id="mainForm" action="/ui/download" method="POST" >
-  <div id="center">
-    <% @hash.each do |key,value| %>
-      <input type="button" class="button" value="Add <%= key %>" onClick="addInput('sortable', '<%= key %>');"><br>
-    <% end %>
-  </div>
-
-  <div id="left">
-    <div id="sortable">
-      <input type="hidden" name="sort" id="sort" value="">
-    </div>
-    <input type=submit value="Download!">
-  </div>
-
-  <div id="right">
-  </div>
-
-</form>
+	<table>
+    	<tr>
+    		<td>
+    			<% if @succ_array%>
+				    <H1><%= @yamls_path%></H1>
+				<% end%>	
+    			<div id="new_yaml">
+				<form id="mainForm" action="/ui/download" method="POST" >
+				  <div id="center">
+				    <% @hash.each do |key,value| %>
+				      <input type="button" class="button" value="Add <%= key %>" onClick="autoInput('sortable', '<%= key %>');"><br>
+				    <% end %>
+				  </div>          
+				  <div id="left">
+				    <div id="sortable">
+				      <input type="hidden" name="sort" id="sort" value="">
+				    </div>
+				    <input type=submit value="Download!">
+				  </div>
+				  <div id="right">
+				  </div>
+				</form>
+				</div>
+			  </td>
+		</tr>
+	</table>
+<%= link_to "LIST FILES", { :controller => "ui"} %>
 </body>
 </html>
-
-

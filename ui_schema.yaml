@@ -1,0 +1,528 @@
+package:
+    name:
+    ensure:
+        mandatory: true  
+    adminfile: 
+        select_type: /var/sadm/install/admin
+    allowcdrom: 
+        select_type: /true/false
+    category: 
+    configfiles:
+    description: 
+    flavor:
+    install_options:
+    instance: 
+    platform:     
+    provider:
+    esponsefile:
+    root:  
+    source:
+    status:   
+    uninstall_options:       
+    vendor:
+file:
+    name:
+    backup:
+    checksum: 
+        select_type: /md5/d5lite/mtime/ctime/none
+    ctime:
+    ensure:  
+    source:
+    ignore:  
+    links:
+    force:
+    mtime: 
+    path:
+    provider:  
+    purge: 
+        select_type: /true/false
+    recurse: 
+    recurselimit: 
+    replace:     
+    selinux_ignore_defaults:
+    selrange:  
+    seltype:
+    seluser:  
+    show_diff:
+    sourceselect:
+    type:
+    owner:
+        regexp: '^[a-zA-Z0-9]+$'
+    group:
+        regexp: '^[a-zA-Z0-9]+$'
+    mode:
+        regexp: '^[0-1]?[0-7]{3}$'
+    content:  
+    target:     
+service:
+    name:
+    binary:
+    control:
+    ensure:  
+        select_type: /true/false
+    enable: 
+        select_type: /true/false/manual
+    manifest:
+    path:
+    pattern:
+    provider:  
+    restart:
+    start:
+    stop:
+    status:
+    hasrestart: 
+        select_type: /true/false
+    hasstatus: 
+        select_type: /true/false
+    has_restart:
+    subscribe:
+notify:
+    name:
+    message:
+    withpath: 
+        select_type: /true/falsenagios_command
+augeas:
+    name:
+    context:
+    changes:  
+    force:
+    incl:  
+    lens:
+    onlyif:  
+    provider:
+    returns:
+    root:
+    typr_check:
+computer:
+    name:
+    en_address:
+    ip_address:
+    ensure:
+    provider:  
+    realname:
+cron:
+    name:   
+    command:
+    ensure:
+    enviroment:
+    hour:
+    minute:
+    month:
+    monthday:
+    provide:
+    special:
+    target:
+    user:
+    weekday:
+exec:
+    command:
+        mandatory: true 
+    creates:
+    cwd:
+    environment:
+    group:
+    logoutput:
+    onlyif:
+    path:
+    provider:  
+    refresh:
+    refreshonly:
+    returns:
+    timeout:
+    tries:
+    try_sleep:
+    unless:
+    user:
+filebucket:
+    name:
+    path:
+    port:
+    server:
+group:
+    name:
+    allowdupe: 
+        select_type: /false/true
+    attribute_membership: 
+        select_type: /inclusive/minimum
+    attributes:
+    auth_membership:
+    ensure: 
+        select_type: /present/absent
+    forcelocal: 
+        select_type: false/true
+    gid:
+    ia_load_module:
+    members:            
+    provider:    
+    system: 
+        select_type: /false/true
+host:
+    name:
+    comment:
+    ensure: 
+        select_type: /present/absent/
+    host_aliases:
+    ip:          
+    provider:
+    target:
+interface:
+    name:
+    allowed_trunk_vlans:                             
+    description:
+    device_url:
+    duplex: 
+        select_type: /auto/full/half
+    encapsulation: 
+        select_type: /none/dot1q/isl
+    ensure: 
+        select_type: /present/absent
+    etherchannel:
+    ipaddress:
+    mode: 
+        select_type: /access/trunk
+    native_vlan:
+    provider: 
+    speed:
+k5login:
+    path: 
+        mandatory: true   
+    ensure: 
+        select_type: /present/absent
+    mode:     
+        regexp: '^[0-1]?[0-7]{3}$'
+    principals:
+    provider: 
+macauthorization:
+    name:
+    allow_root:  
+        select_type: /false/true      
+    auth_class:  
+        select_type: /user/evaluate-mechanisms/allow/deny/rule     
+    auth_type: 
+        select_type: /right/rule
+    authenticate_user:  
+        select_type: /false/true  
+    comment: 
+    ensure:    
+        select_type: /present/absent                                                                          
+    group:  
+    k_of_n:
+    mechanisms:   
+    provider:
+    rule:
+    session_owner:
+    shared:       
+        select_type: /false/true 
+    timeout:
+    tries:
+mailalias:
+    name:
+    ensure:    
+        select_type: /present/absent
+    provide:
+    recipient:
+    target:
+maillist:
+    name:
+    admin:
+    description:
+    ensure:    
+        select_type: /present/absent/purged
+    mailserver:
+    provider:
+    webserver:    
+mcx:
+    name:
+    content:
+    ds_type: 
+    ds_name:           
+    ensure:    
+        select_type: /present/absent
+    provider:
+mount:
+    name:
+    atboot:
+    blockdevice:
+    device:
+    dump:
+    ensure:    
+        select_type: /present/absent/mounted/unmounted
+    fstype:
+    options:
+    pass:
+    provider:
+    remounts: 
+        select_type: /true/false
+    target:
+#nagios_command:
+#nagios_contact:
+#nagios_contactgroup:
+#nagios_host:
+#nagios_hostdependency:
+#nagios_hostescalation:
+#nagios_hostextinfo:
+#nagios_hostgroup:
+#nagios_service:
+#nagios_servicedependency:
+#nagios_serviceescalation:
+#nagios_serviceextinfo:
+#nagios_servicegroup:
+#nagios_timeperiod:               
+resources:
+     name:
+     purge: 
+         select_type: /true/false
+     unless_system_user:
+router: 
+     url:
+         mandatory: true     
+schedule:
+     name:
+     period: 
+         select_type: /hourly/daily/weekly/monthly/never
+     periodmatch: 
+         select_type: /number/distance
+     range:
+     repeat:
+     weeekday:
+scheduled_task:
+     name:
+     arguments:
+     command:
+     enabled:   
+         select_type: /true/false
+     ensure:    
+         select_type: /present/absent
+     password:
+     provider:
+     trigger:
+     user:
+     working_dir:
+selboolean:
+     name:
+     persistent: 
+         select_type: /true/false
+     provider: 
+     value: 
+         select_type: /on/off
+selmodule:
+     name:
+     ensure:    
+         select_type: /present/absent
+     provider:
+     selmoduledir:
+     selmodulepath:
+     syncversion: 
+         select_type: /true/false
+ssh_authorized_key:
+     name:
+     ensure:    
+         select_type: /present/absent      
+     key:
+     options:
+     provider:
+     target:
+     type:
+     user:
+sshkey:
+     name:
+     ensure:        
+         select_type: /present/absent
+     host_aliases:
+     key:
+     provider:
+     target:
+     type:
+stage:
+     name:
+tidy: 
+     path:
+         mandatory: true
+     age:
+     backup:
+     matches:   
+     recurce:
+     rmdir: 
+         select_type: /true/false
+     size:            
+     type:  
+         select_type: /atime/mtime/ctime                                             
+user:
+     name:
+     allowdupe:   
+         select_type: /true/false
+     attribute_membership: 
+         select_type: /inclusive/minimum
+     attributes:
+     auth_membership:     
+         select_type: /inclusive/minimum
+     auths:
+     comment:
+     ensure:     
+         select_type: /present/absent/role     
+     expiry:
+     forcelocal: 
+         select_type: /true/false
+     gid:
+     groups:
+     home:
+     ia_load_module:
+     iterations:
+     key_membership:    
+         select_type: /inclusive/minimum
+     keys:
+     managehome: 
+         select_type: /true/false
+     membership: 
+         select_type: /inclusive/minimum
+     password:
+     provider:
+     password_max_age:
+     password_min_age:
+     profile_membership:  
+         select_type: /inclusive/minimum
+     profile:
+     project:
+     provider:
+     role_membership:      
+         select_type: /inclusive/minimum
+     roles:
+     salt:
+     shell:
+     system: 
+         select_type: /true/false
+     uid:
+vlan:
+     name:
+     description:
+     device_url:
+     ensure:     
+         select_type: /present/absent
+     provide:
+yumrepo:
+     name:
+     baseurl:
+     descr:
+     enabled: 
+         select_type: /absent/0/1
+     enablegroups: 
+         select_type: /absent/0/1
+     exclude:
+     failovermethod: 
+         select_type: /absent/roundrobin/priority
+     gpgcheck:  
+         select_type: /absent/0/1
+     gpgkey:    
+         select_type: /absent/0/1     
+     http_caching:   
+         select_type: /absent/packages/all/none/
+     include:
+     includepkgs:
+     keepalive: 
+         select_type: /absent/0/1
+     metadata_expire:
+     mirrorlist:
+     priority:
+     protect: 
+         select_type: /absent/0/1
+     proxy:
+     proxy_pssword:
+     proxy_username:
+     sslcacert:
+     sslclientcert:
+     sslclientkey:
+     sslverify:
+     timeout:
+zfs:
+      name:
+      aclinherit: 
+          select_type: /discard/noallow/restricted/passthrough/passthrough-x
+      atime: 
+          select_type: /on/off
+      aclmode: 
+          select_type: /discard/groupmask/passthrough                 
+      canmount:  
+          select_type: /on/off/noauto
+      checksum:  
+          select_type: /on/off/fletcher2/fletcher4/sha256   
+      compression:  
+          select_type: /on/off/lzjb/gzip/gzip-1/gzip-2/gzip-3/gzip-4/gzip-5/gzip-6/gzip-7/gzip-8/gzip-9/zle                                   
+      copies: 
+          select_type: /1/2/3
+      dedup: 
+          select_type: /on/off
+      devices: 
+          select_type: /on/off
+      ensure:  
+          select_type: /present/absent                                                
+      exec: 
+          select_type: /on/off
+      logbias: 
+          select_type: /latency/throughput
+      mountpoint: 
+      nbmand:  
+          select_type: /on/off
+      primarycache: 
+          select_type: /all/none/metadata
+      provide:
+      quota:
+      readonly: 
+          select_type: /on/off
+      recordsize:
+      refquote:
+      refreservation:
+      reservation:
+      secondarycache:
+      setuid: 
+          select_type: on/off
+      shareiscsi:
+      sharenfs:  
+          select_type: /on/off
+      sharesmb: 
+          select_type: /on/off
+      snapdir: 
+          select_type: /hidden/vasible
+      version: 
+          select_type: /1/2/3/4/current
+      volsize:
+      vscan: 
+          select_type: /on/off
+      xattr:  
+          select_type: /on/off
+      zoned: 
+          select_type: /on/off
+zone:
+      name:
+      autoboot: 
+          select_type: /true/false
+      clone:
+      create_args:     
+      dataset:
+      ensure:  
+          select_type: /absent/configured/installed/running        
+      id:
+      inherit:
+      install_args:
+      ip:
+      iptype: 
+          select_type: /shared/exclusive
+      path:
+      pool:
+      provide:
+      realhostname:
+      shares:
+      sysidcfg:
+zpool:
+      pool:
+          mandatory: true
+      disk:
+      ensure:  
+          select_type: /present/absent  
+      log:
+      mirror: 
+      provider:
+      raid_parity:
+      raidz:
+      spare:                                       
+                  
+              

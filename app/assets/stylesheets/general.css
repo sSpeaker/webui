@@ -3,23 +3,59 @@ width: 300px;
 }
 
 input.button{
-width: 100px;
+width: 180px;
 }
 
+div[id="list_yaml"]{
+	height:500px;
+	width:300px;
+	border:1px solid #ccc;
+	font:16px/26px Georgia, Garamond, Serif;
+	overflow:auto;
+}
+
+select {
+   width: 190px;
+}
+
+input {
+   width: 185px;
+}
+
+div[id="body_yaml"]{
+	height:500px;
+	width:600px;
+	border:1px solid #ccc;
+	font:16px/26px Georgia, Garamond, Serif;
+	overflow:auto;
+}
+
+div[id="new_yaml"]{
+	height:500px;
+	width:1000px;
+	border:1px solid #ccc;
+	font:16px/26px Georgia, Garamond, Serif;
+	overflow:auto;
+}
+a:link {color:#000;margin: 10px;}      /* unvisited link */
+a:visited {color:#ccc;margin: 10px;}  /* visited link */
+a:hover {color:#222;margin: 10px;}  /* mouse over link */
+a:active {color:#333;margin: 10px;}  /* selected link */
+
 div[id^="dynamicInput_"]{
-padding-top: 10px;
-padding-bottom: 10px;
-background-color: #F5F5DC;
-width: 95%;
-cursor: move;
-min-height: 60 px;
-height: 60 px;
-border-radius:6px;
--webkit-border-radius:6px;
--moz-border-radius:5px;
--khtml-border-radius:10px;
-margin-top: 10px;
-margin-left: 4px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #F5F5DC;
+	width: 95%;
+	cursor: move;
+	min-height: 60 px;
+	height: 60 px;
+	border-radius:6px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:5px;
+	-khtml-border-radius:10px;
+	margin-top: 10px;
+	margin-left: 4px;
 }
 
 #mainForm input.error {
@@ -33,21 +69,21 @@ p { color:blue; margin:8px; }
     float: left;
     width: 20%;
     border-style:;
-border-width: 1px;
-border-color: #000000;
-border-radius:6px;
--webkit-border-radius:6px;
--moz-border-radius:5px;
--khtml-border-radius:10px;
+	border-width: 1px;
+	border-color: #000000;
+	border-radius:6px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:5px;
+	-khtml-border-radius:10px;
 }
 
-  #center {
+#center {
     float: left;
     width: 20%;
-  }
+}
 
-  #right {
+#right {
     float: right;
     width: 58%;
-  }
+}
 

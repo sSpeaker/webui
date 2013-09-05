@@ -1,30 +1,57 @@
+<html>
+<head>
  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
  <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-
 <script>
 
 $(document).ready(function() {
         $('a.link').click(function() {
-$('a.link').css('background-color', '#FFFFFF');
+$('a.link').css('background-color', '#000');
                 $(this).css('background-color', '#EBA521');
                 return false;
         });
 });
 
 function MyFunction(link){
-$("a.mylink").attr("href", link);
+	$("a.mylink").attr("href", "/ui/new?file="+link);
+	var div = document.getElementById('body_yaml');
+	$.get("http://<%= request.env['HTTP_HOST'] %>/ui/files?file="+link, function(data) {
+    	div.innerHTML = data;
+});	
 }
-
 </script>
-
-<div style="height:500px;width:120px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-
-<% Dir.chdir(@yamls_dir)%>
-<% Dir['*.yaml'].sort.each do |file| %>
-<a href="#" class="link" OnClick="MyFunction('<%= file %>');"><%= file %></a><br>
-<% end %>
-</div>
+</head>
+<body>
+<table>
+  <tr>
+    <td>
+    	<div id="list_yaml">
+			<% Dir.chdir(@yamls_dir)%>
+			<% Dir['*.yaml'].sort.each do |file| %>
+			<a href="#" class="link" OnClick="MyFunction('<%= file %>');"><%= file %></a><br>
+			<% end %>
+		</div>
+    </td>
+    <td> 
+    	<div id="body_yaml">
+    		<%  Dir.chdir(@yamls_dir)%>
+    <strong><%= @yamls_dir + "/" + Dir['*.yaml'].sort[0] %></strong><br>
+			<%  File.open("#{@yamls_dir}/#{Dir['*.yaml'].sort[0]}").read.each_line do |line| %>
+			<%    if /^    */ =~ line %>
+			<%=     "&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %><%=     "#{line}"%><br>
+			<%    elsif /^  */ =~ line %>
+			<%=     "&nbsp;&nbsp;".html_safe %><%=     "#{line}"%><br>
+			<%    else%>
+			<%=     "#{line}"%><br>
+			<%    end %>
+			<%  end %>
+		</div>
+    </td>
+  </tr>
+</table>
 <a href="#" class="mylink">EDIT</a>
-<a href="#">VIEW</a>
+<a href="/ui/new">NEW</a>
+</body>
+</html>
