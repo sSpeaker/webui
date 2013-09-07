@@ -132,7 +132,7 @@ function autoInput(divName, type , name_param , name_param1) {
 	  	                                 		if ( masyv[i] == '<%= field_name %>' ){
 	  	                                 <% if  !options['select_type']%>			
 	              mainCanvasDiv.innerHTML = mainCanvasDiv.innerHTML + '<input type="text" value="' + masyv[i+1] + '" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
-	                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
+	                                       class="<% if ( k == 'exec' and field_name == 'command' ) or ( k == 'k5login' or k == 'tidy' and field_name == 'path' ) or ( k == 'router' and field_name == 'url' ) or ( k == 'zpool' and field_name == 'pool' ) %><%= 'name' %><% end %><%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
 	                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
 	                                       data-counter="' + counter + '" \
 	                                       <%= "required" if field_name == "name" or options['mandatory']%>>';
@@ -190,8 +190,8 @@ function autoInput(divName, type , name_param , name_param1) {
 	                                       <% end %>
 	                                       <% end %>
 	                                       <% if  !options['select_type']%>
-	                                        <input type="text" id="input_<%= k %>_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
-	                                       class="<%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
+	                                        <input type="text" id="input_<%= field_name %>_' + counter + '" name="<%= k %>_<%= field_name %>_' + counter + '" \
+	                                       class="<% if ( k == 'exec' and field_name == 'command' ) or ( k == 'k5login' or k == 'tidy' and field_name == 'path' ) or ( k == 'router' and field_name == 'url' ) or ( k == 'zpool' and field_name == 'pool' ) %><%= 'name' %><% end %><%= "regexp " if options['regexp']%><%= "name " if field_name == "name" %>" \
 	                                       <%= 'data-regexp='+options['regexp']+'' if options['regexp'] %> \
 	                                       data-counter="' + counter + '" \
 	                                       <%= "required" if field_name == "name" or options['mandatory']%>>\
@@ -208,14 +208,82 @@ function autoInput(divName, type , name_param , name_param1) {
   $('#dynamicInput_' + counter + ' show_hide' + counter).click(generateHandler(counter));
   counter++;
 }
-
-function selectChange(elementselect){
-	if(document.getElementById(elementselect)){
-    	alert('<%= @name %>');
-	}
-}
  
+$(function () {
+    $(document).on('click', 'span', function () {
+    	name_array = [];
+    	name_array1 = [];
+    	strUser_notify_id = '';
+		strUser_subscribe_id = '';
+    	value_number = $(this).parent().attr("class").substring(14);
+		value_name = $(this).parent()[0].text.toLowerCase().split(':');
+    	selector_notify_option = "input_" + value_name[0] + "_notify_" + value_number;
+	    selector_subscribe_option = "input_" + value_name[0] + "_subscribe_" + value_number;
+	    e_notify = document.getElementById(selector_notify_option);
+		e_subscribe = document.getElementById(selector_subscribe_option);
+    	if (e_notify.innerHTML.trim() != ''){
+	    	strUser_notify_id = e_notify.options[e_notify.selectedIndex].id;	
+    	}
+    	if (e_subscribe.innerHTML.trim() != ''){
+	    	strUser_subscribe_id = e_subscribe.options[e_subscribe.selectedIndex].id;
+    	}
+		$("span").each(function (i){
+		    name_array[name_array.length] = $(this).text();
+		    if($(this).attr("id")){
+		    	name_array1[name_array1.length] = $(this).attr("id").substring(($(this).attr("id").length)-1); 
+		    };
+		});
+        console.log(name_array1);
+		selector_notify = "#input_" + value_name[0] + "_notify_" + value_number;
+		selector_subscribe = "#input_" + value_name[0] + "_subscribe_" + value_number;	
+		$(selector_notify).empty();
+	    $(selector_subscribe).empty();
+		option = '<option id=\'0\' ></option>';			
+		$(selector_notify).append( $(option));
+		$(selector_subscribe).append( $(option));
+		for(var i = 0, l = 0; i < name_array.length; i=i+2, l++){
+			if(name_array[i+1] != '' && name_array[i] != ''){
+				if(name_array1[l] == strUser_notify_id && strUser_notify_id != ''){
+					option_notify = '<option id=\''+name_array1[l]+'\' selected >'+name_array[i]+name_array[i+1]+'</option>';
+				}else{
+					option_notify = '<option id=\''+name_array1[l]+'\' >'+name_array[i]+name_array[i+1]+'</option>';
+				};
+				$(selector_notify).append( $(option_notify));
+				if( name_array1[l] == strUser_subscribe_id && strUser_subscribe_id != ''){
+					option_subscribe = '<option id=\''+name_array1[l]+'\' selected >'+name_array[i]+name_array[i+1]+'</option>';
+				}else{
+					option_subscribe = '<option id=\''+name_array1[l]+'\' >'+name_array[i]+name_array[i+1]+'</option>';
+				};
+				$(selector_subscribe).append( $(option_subscribe));			
+			};
+		};			
+    });
+}); 
 
+function download(){
+	name_array = [];
+    name_array1 = [];
+	$("span").each(function (i){
+	    name_array[name_array.length] = $(this).text();
+	    if($(this).attr("id")){
+	    	name_array1[name_array1.length] = $(this).attr("id").substring(($(this).attr("id").length)-1); 
+	    };
+	});
+	$(".styled-select").each(function (i){
+		if ($($(this).children()[0]).attr("id")){
+			e = document.getElementById($(this).attr("id"));
+	    	if (e.innerHTML != ''){
+		    	strUser_id = e.options[e.selectedIndex].id;
+		    	strUser_name = e.options[e.selectedIndex].text;
+	    	};
+	    	for(var i = 0; i < name_array1.length; i++){
+	    		if(strUser_id == name_array1[i] && strUser_name != (name_array[i*2] + name_array[i*2+1]) ){
+	    			e.options[e.selectedIndex].text = (name_array[i*2] + name_array[i*2+1]);
+	    		};
+	    	};
+		};
+	});		
+};
 </script>
 </head>
 <body>
@@ -236,7 +304,7 @@ function selectChange(elementselect){
 				    <div id="sortable">
 				      <input type="hidden" name="sort" id="sort" value="">
 				    </div>
-				    <input type=submit value="Download!">
+				    <input type=submit onClick="download();"  value="Download!">
 				  </div>
 				  <div id="right">
 				  </div>

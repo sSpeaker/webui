@@ -20,6 +20,10 @@ package:
     status:   
     uninstall_options:       
     vendor:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 file:
     name:
     backup:
@@ -53,7 +57,11 @@ file:
     mode:
         regexp: '^[0-1]?[0-7]{3}$'
     content:  
-    target:     
+    target:   
+    notify: 
+        select_type: /  
+    subscribe:
+        select_type: /
 service:
     name:
     binary:
@@ -76,11 +84,19 @@ service:
         select_type: /true/false
     has_restart:
     subscribe:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 notify:
     name:
     message:
     withpath: 
-        select_type: /true/falsenagios_command
+        select_type: /true/false
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 augeas:
     name:
     context:
@@ -93,6 +109,10 @@ augeas:
     returns:
     root:
     typr_check:
+    notify: 
+        select_type: /	
+    subscribe:
+        select_type: /
 computer:
     name:
     en_address:
@@ -100,6 +120,10 @@ computer:
     ensure:
     provider:  
     realname:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 cron:
     name:   
     command:
@@ -114,6 +138,10 @@ cron:
     target:
     user:
     weekday:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 exec:
     command:
         mandatory: true 
@@ -133,11 +161,19 @@ exec:
     try_sleep:
     unless:
     user:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 filebucket:
     name:
     path:
     port:
     server:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 group:
     name:
     allowdupe: 
@@ -149,13 +185,17 @@ group:
     ensure: 
         select_type: /present/absent
     forcelocal: 
-        select_type: false/true
+        select_type: /false/true
     gid:
     ia_load_module:
     members:            
     provider:    
     system: 
         select_type: /false/true
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 host:
     name:
     comment:
@@ -165,6 +205,10 @@ host:
     ip:          
     provider:
     target:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 interface:
     name:
     allowed_trunk_vlans:                             
@@ -183,6 +227,10 @@ interface:
     native_vlan:
     provider: 
     speed:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 k5login:
     path: 
         mandatory: true   
@@ -192,6 +240,10 @@ k5login:
         regexp: '^[0-1]?[0-7]{3}$'
     principals:
     provider: 
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 macauthorization:
     name:
     allow_root:  
@@ -215,6 +267,10 @@ macauthorization:
         select_type: /false/true 
     timeout:
     tries:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 mailalias:
     name:
     ensure:    
@@ -222,6 +278,10 @@ mailalias:
     provide:
     recipient:
     target:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 maillist:
     name:
     admin:
@@ -230,7 +290,11 @@ maillist:
         select_type: /present/absent/purged
     mailserver:
     provider:
-    webserver:    
+    webserver: 
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /   
 mcx:
     name:
     content:
@@ -239,6 +303,10 @@ mcx:
     ensure:    
         select_type: /present/absent
     provider:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 mount:
     name:
     atboot:
@@ -254,6 +322,10 @@ mount:
     remounts: 
         select_type: /true/false
     target:
+    notify: 
+        select_type: /
+    subscribe:
+        select_type: /
 #nagios_command:
 #nagios_contact:
 #nagios_contactgroup:
@@ -273,9 +345,17 @@ resources:
      purge: 
          select_type: /true/false
      unless_system_user:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 router: 
      url:
-         mandatory: true     
+         mandatory: true 
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /    
 schedule:
      name:
      period: 
@@ -285,6 +365,10 @@ schedule:
      range:
      repeat:
      weeekday:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 scheduled_task:
      name:
      arguments:
@@ -298,6 +382,10 @@ scheduled_task:
      trigger:
      user:
      working_dir:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 selboolean:
      name:
      persistent: 
@@ -305,6 +393,10 @@ selboolean:
      provider: 
      value: 
          select_type: /on/off
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 selmodule:
      name:
      ensure:    
@@ -314,6 +406,10 @@ selmodule:
      selmodulepath:
      syncversion: 
          select_type: /true/false
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 ssh_authorized_key:
      name:
      ensure:    
@@ -324,6 +420,10 @@ ssh_authorized_key:
      target:
      type:
      user:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 sshkey:
      name:
      ensure:        
@@ -333,8 +433,16 @@ sshkey:
      provider:
      target:
      type:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 stage:
      name:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 tidy: 
      path:
          mandatory: true
@@ -346,7 +454,11 @@ tidy:
          select_type: /true/false
      size:            
      type:  
-         select_type: /atime/mtime/ctime                                             
+         select_type: /atime/mtime/ctime 
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /                                            
 user:
      name:
      allowdupe:   
@@ -392,6 +504,10 @@ user:
      system: 
          select_type: /true/false
      uid:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 vlan:
      name:
      description:
@@ -399,6 +515,10 @@ vlan:
      ensure:     
          select_type: /present/absent
      provide:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /
 yumrepo:
      name:
      baseurl:
@@ -433,6 +553,10 @@ yumrepo:
      sslclientkey:
      sslverify:
      timeout:
+     notify: 
+        select_type: /
+     subscribe:
+        select_type: /     
 zfs:
       name:
       aclinherit: 
@@ -491,6 +615,10 @@ zfs:
           select_type: /on/off
       zoned: 
           select_type: /on/off
+      notify: 
+        select_type: /
+      subscribe:
+        select_type: /
 zone:
       name:
       autoboot: 
@@ -512,6 +640,10 @@ zone:
       realhostname:
       shares:
       sysidcfg:
+      notify: 
+        select_type: /
+      subscribe:
+        select_type: /
 zpool:
       pool:
           mandatory: true
@@ -523,6 +655,9 @@ zpool:
       provider:
       raid_parity:
       raidz:
-      spare:                                       
-                  
+      spare:  
+      notify: 
+        select_type: /                                     
+      subscribe:
+        select_type: /                  
               

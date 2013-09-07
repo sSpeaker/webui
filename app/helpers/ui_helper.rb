@@ -77,9 +77,9 @@ module UiHelper
           hash1[i] = params["#{type}_#{i}_#{num}".to_sym]
         end
         if hash1.empty?
-          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => "!!!!" }
+          yaml_tmp[type] = { params["#{type}_command_#{num}".to_sym].to_s => "!!!!" }
         else
-          yaml_tmp[type] = { params["#{type}_url_#{num}".to_sym].to_s => hash1 }
+          yaml_tmp[type] = { params["#{type}_command_#{num}".to_sym].to_s => hash1 }
         end
 
         if order.empty?
